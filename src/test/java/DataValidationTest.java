@@ -40,7 +40,7 @@ public class DataValidationTest {
 
     @Test
     public void testEmployeeCount() throws SQLException {
-        String query = "SELECT COUNT(*) AS count FROM chinook.employee";
+        String query = "SELECT COUNT(*) AS count FROM chinook.Employee";
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
 
@@ -54,7 +54,7 @@ public class DataValidationTest {
 
     @Test
     public void testCustomerEmails() throws SQLException {
-        String query = "SELECT Email FROM chinook.customer LIMIT 5";
+        String query = "SELECT Email FROM chinook.Customer LIMIT 5";
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
 
@@ -73,7 +73,7 @@ public class DataValidationTest {
     public void testTopCustomerByTrackPurchases() throws SQLException {
         String query = """
             SELECT c.CustomerId, c.FirstName, c.LastName, COUNT(il.TrackId) AS TotalTracks
-            FROM Customer c
+            FROM chinook.Customer c
             JOIN Invoice i ON c.CustomerId = i.CustomerId
             JOIN InvoiceLine il ON i.InvoiceId = il.InvoiceId
             GROUP BY c.CustomerId, c.FirstName, c.LastName
