@@ -43,6 +43,10 @@ jobs:
           echo "Loading Chinook database schema..."
           mysql --host=127.0.0.1 --port=3306 -uroot -p${{ secrets.DB_PASSWORD }} chinook < src/test/resources/chinook.sql
 
+      - name: Verify Tables
+        run: |
+          mysql --host=127.0.0.1 --port=3306 -uroot -p${{ secrets.MYSQL_ROOT_PASSWORD }} -D chinook -e "SHOW TABLES;"
+
       - name: Create Config File for Tests
         run: |
           echo "DB_URL=${{ secrets.DB_URL }}" > src/test/resources/config.properties
