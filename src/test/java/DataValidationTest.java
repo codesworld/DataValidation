@@ -40,7 +40,7 @@ public class DataValidationTest {
 
     @Test
     public void testEmployeeCount() throws SQLException {
-        String query = "SELECT COUNT(*) AS count FROM employee";
+        String query = "SELECT COUNT(*) AS count FROM chinook.employee";
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
 
@@ -54,7 +54,7 @@ public class DataValidationTest {
 
     @Test
     public void testCustomerEmails() throws SQLException {
-        String query = "SELECT Email FROM customer LIMIT 5";
+        String query = "SELECT Email FROM chinook.customer LIMIT 5";
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
 
