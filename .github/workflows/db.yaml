@@ -36,18 +36,18 @@ jobs:
       - name: Verify MySQL Connection
         run: |
           sudo apt-get install -y mysql-client
-          mysql --host=127.0.0.1 --port=3306 -uroot -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "SHOW DATABASES;"
+          mysql --host=127.0.0.1 --port=3306 -uroot -p${{ secrets.DB_PASSWORD }} -e "SHOW DATABASES;"
 
       - name: Load Chinook Database Schema
         run: |
           echo "Loading Chinook database schema..."
-          mysql --host=127.0.0.1 --port=3306 -uroot -p${{ secrets.MYSQL_ROOT_PASSWORD }} chinook < src/test/resources/chinook.sql
+          mysql --host=127.0.0.1 --port=3306 -uroot -p${{ secrets.DB_PASSWORD }} chinook < src/test/resources/chinook.sql
 
       - name: Configure Environment Variables from GitHub Secrets
         run: |
           echo "DB_URL=${{ secrets.DB_URL }}" >> $GITHUB_ENV
           echo "DB_USERNAME=root" >> $GITHUB_ENV
-          echo "DB_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" >> $GITHUB_ENV
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> $GITHUB_ENV
           echo "DB_DRIVER=${{ secrets.DB_DRIVER }}" >> $GITHUB_ENV
 
       - name: Verify Environment Variables (Debugging)
@@ -61,5 +61,5 @@ jobs:
         env:
           DB_URL: ${{ secrets.DB_URL }}
           DB_USERNAME: root
-          DB_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_DRIVER: ${{ secrets.DB_DRIVER }}
