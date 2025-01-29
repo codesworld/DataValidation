@@ -2,7 +2,7 @@ name: Database Tests
 
 on:
   push:
-    branches: [main, develop]
+    branches: [master]
   pull_request:
 
 jobs:
