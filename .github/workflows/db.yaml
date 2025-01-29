@@ -45,7 +45,7 @@ jobs:
 
       - name: Verify Tables
         run: |
-          mysql --host=127.0.0.1 --port=3306 -uroot -p${{ secrets.MYSQL_ROOT_PASSWORD }} -D chinook -e "SHOW TABLES;"
+          mysql --host=127.0.0.1 --port=3306 -uroot -p${{ secrets.DB_PASSWORD }} -D chinook -e "SHOW TABLES;"
 
       - name: Create Config File for Tests
         run: |
