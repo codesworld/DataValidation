@@ -1,3 +1,6 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Connection;
 
 import Utils.DBConnection;
@@ -17,7 +20,8 @@ public class DataValidationTest {
     private static Connection connection;
 
     @BeforeAll
-    public static void setup() {
+    public static void setup() throws IOException {
+        String sql = new String(Files.readAllBytes(Paths.get("src/test/resources/chinook.sql")));
         try{
         connection = DBConnection.getConnection();
         Assertions.assertNotNull(connection, "Database connection is NULL. Check your config.");
