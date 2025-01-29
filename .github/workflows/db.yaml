@@ -13,14 +13,12 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
-          DB_URL: ${{ secrets.DB_URL }}
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DB_DRIVER: ${{ secrets.DB_DRIVER }}
+          MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          MYSQL_DATABASE: test_db
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="mysqladmin ping --host=localhost --user=${{ secrets.DB_USERNAME }} --password=${{ secrets.DB_PASSWORD }}
+          --health-cmd="mysqladmin ping"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
@@ -35,12 +33,26 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Verify MySQL Connection
+        run: |
+          sudo apt-get install -y mysql-client
+          mysql --host=localhost --port=3306 -uroot -p${{ secrets.DB_PASSWORD }} -e "SHOW DATABASES;"
+
+      - name: Load Test Data (Optional)
+        run: |
+          mysql --host=localhost --port=3306 -uroot -p${{ secrets.DB_PASSWORD }} test_db < setup.sql
+
       - name: Configure Environment Variables
         run: |
           echo "DB_URL=${{ secrets.DB_URL }}" >> $GITHUB_ENV
-           echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> $GITHUB_ENV
-           echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> $GITHUB_ENV
-           echo "DB_DRIVER=${{ secrets.DB_DRIVER }}" >> $GITHUB_ENV
+          echo "DB_USER=${{ secrets.DB_USER }}" >> $GITHUB_ENV
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> $GITHUB_ENV
+          echo "DB_DRIVER=${{ secrets.DB_DRIVER }}" >> $GITHUB_ENV
 
       - name: Build and Run Tests
         run: mvn clean test
+        env:
+          DB_URL: ${{ secrets.DB_URL }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_DRIVER: ${{ secrets.DB_DRIVER }}
