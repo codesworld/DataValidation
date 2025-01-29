@@ -40,7 +40,7 @@ jobs:
 
       - name: Load Test Data (Optional)
         run: |
-          mysql --host=127.0.0.1 --port=3306 -uroot -p${{ secrets.DB_PASSWORD }} test_db < setup.sql
+          mysql --host=127.0.0.1 --port=3306 -uroot -p${{ secrets.DB_PASSWORD }} test_db < chinook.sql
 
       - name: Configure Environment Variables
         run: |
