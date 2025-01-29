@@ -43,6 +43,13 @@ jobs:
           echo "Loading Chinook database schema..."
           mysql --host=127.0.0.1 --port=3306 -uroot -p${{ secrets.DB_PASSWORD }} chinook < src/test/resources/chinook.sql
 
+      - name: Create Config File for Tests
+        run: |
+          echo "DB_URL=${{ secrets.DB_URL }}" > src/test/resources/config.properties
+          echo "DB_USERNAME=root" >> src/test/resources/config.properties
+          echo "DB_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" >> src/test/resources/config.properties
+          echo "DB_DRIVER=${{ secrets.DB_DRIVER }}" >> src/test/resources/config.properties
+
       - name: Configure Environment Variables from GitHub Secrets
         run: |
           echo "DB_URL=${{ secrets.DB_URL }}" >> $GITHUB_ENV
@@ -54,6 +61,7 @@ jobs:
         run: |
           echo "DB_URL=$DB_URL"
           echo "DB_USERNAME=$DB_USERNAME"
+          echo "DB_PASSWORD=$DB_PASSWORD"
           echo "DB_DRIVER=$DB_DRIVER"
 
       - name: Build and Run Tests
